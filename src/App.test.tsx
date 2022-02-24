@@ -1,6 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { screen } from "@testing-library/dom";
+import { screen } from "@testing-library/react";
 import { store } from "./app/store";
 import App from "./App";
 import { render } from "./test-utils";
