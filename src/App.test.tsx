@@ -1,15 +1,19 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { store } from './app/store';
-import App from './App';
+import React from "react";
+import { Provider } from "react-redux";
+import { screen } from "@testing-library/dom";
+import { store } from "./app/store";
+import App from "./App";
+import { render } from "./test-utils";
 
-test('renders learn react link', () => {
+test("renders learn react link", () => {
   const { getByText } = render(
     <Provider store={store}>
       <App />
     </Provider>
   );
 
-  expect(getByText(/learn/i)).toBeInTheDocument();
+  const linkElement = screen.getByText(/learn chakra/i);
+  expect(linkElement).toBeInTheDocument();
+
+  expect(getByText(/Chakra/i)).toBeInTheDocument();
 });
