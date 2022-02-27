@@ -6,25 +6,20 @@ export interface AuthContextInterface {
   idToken: string | null;
   expiresAt: number | null;
   isAuthenticated: boolean;
-  handleAuthentication: () => void;
   login: (
     userName: string,
     pasword: string,
     returnPath?: string
   ) => Promise<void>;
   logout: () => Promise<void>;
+  restoreContextFromLocalStorage: () => Promise<void>;
+  isValidateToken: (token: string) => Promise<boolean>;
 }
 
-export const authContextDefaults: AuthContextInterface = {
-  checkingSession: false,
-  expiresAt: null,
-  token: null,
-  idToken: null,
-  isAuthenticated: false,
-  handleAuthentication: () => null,
-  login: async (e) => await new Promise((resolve) => resolve()),
-  logout: async () => await new Promise((resolve) => resolve()),
-};
+export const AuthContext = React.createContext<AuthContextInterface | null>(
+  null
+);
 
-export const AuthContext =
-  React.createContext<AuthContextInterface>(authContextDefaults);
+export const AuthContextProvider = AuthContext.Provider;
+
+export const AuthContextConsumer = AuthContext.Consumer;

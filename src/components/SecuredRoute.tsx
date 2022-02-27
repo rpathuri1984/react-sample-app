@@ -1,14 +1,16 @@
-import { Route, Navigate } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 import React from "react";
 import { AuthContext } from "./../context/AuthContext";
+import useLocalStorage from "../hooks/useLocalStorage";
 
-interface SecuredRouteProps {
-  path: string;
-}
+const SecuredRoute = () => {
+  const context = React.useContext(AuthContext);
+  // context?.restoreContextFromLocalStorage();
+  const authTokens = useLocalStorage("authTokens", "");
 
-const SecuredRoute: React.FC<SecuredRouteProps> = ({ children, ...rest }) => {
-  let { token } = React.useContext(AuthContext);
-  return <Route {...rest}>{token ? children : <Navigate to="/login" />}</Route>;
+  console.log(context, authTokens);
+
+  return authTokens ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default SecuredRoute;

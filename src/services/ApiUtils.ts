@@ -23,6 +23,10 @@ const getHeaders = (headers?: any) => {
   };
 };
 
+const MockApiClient = (): MockAdapter => {
+  return new MockAdapter(apiClient);
+};
+
 const PostRequest = async (request: RequestType) => {
   return await apiClient.post(request.url, request.body, {
     params: request.queryParams,
@@ -52,10 +56,6 @@ const DeleteRequest = async (request: RequestType) => {
     params: request.queryParams,
     headers: getHeaders(request.headers),
   });
-};
-
-const MockApiClient = (): MockAdapter => {
-  return new MockAdapter(apiClient);
 };
 
 export {
