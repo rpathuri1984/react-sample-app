@@ -3,17 +3,16 @@ import { ChakraProvider, theme } from "@chakra-ui/react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
-import { AuthContextProvider } from "./context/AuthContext";
-import useAuthContext from "./context/useAuthContext";
+import { AuthProvider } from "./context/AuthContext";
 import SecuredRoute from "./components/SecuredRoute";
 
 function App() {
   return (
-    <AuthContextProvider value={useAuthContext()}>
+    <AuthProvider>
       <ChakraProvider theme={theme}>
         <BrowserRouter>
           <Routes>
-            <Route path="/">
+            <Route path="/" element={<SecuredRoute />}>
               <Route index element={<HomePage />} />
               <Route path="teams">
                 <Route index element={<div>teams</div>} />
@@ -30,7 +29,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </ChakraProvider>
-    </AuthContextProvider>
+    </AuthProvider>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   Flex,
   Heading,
@@ -18,11 +18,9 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { AuthContext } from "../context/AuthContext";
-//import { AuthContext } from "../context/AuthContext";
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -38,7 +36,6 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const handleShowClick = () => setShowPassword(!showPassword);
   const context = React.useContext(AuthContext);
-  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -47,7 +44,7 @@ const LoginPage = () => {
     validationSchema: loginValidationSchema,
     onSubmit: async (values) => {
       await context?.login(values.email, values.password);
-      navigate("/user");
+      window.location.href = "/user";
     },
   });
 

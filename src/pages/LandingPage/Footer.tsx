@@ -14,6 +14,7 @@ import {
 import { ReactNode } from "react";
 import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { BiMailSend } from "react-icons/bi";
+import dayjs from "dayjs";
 
 const Logo = (props: any) => {
   return (
@@ -91,7 +92,9 @@ export default function Footer() {
               <Logo color={useColorModeValue("gray.700", "white")} />
             </Box>
             <Text fontSize={"sm"}>
-              © 2020 Chakra Templates. All rights reserved
+              © {dayjs().add(-3, "year").format("YYYY")}-
+              {dayjs().format("YYYY")} Predifast Technologies Private Limited.
+              All rights reserved
             </Text>
             <Stack direction={"row"} spacing={6}>
               <SocialButton label={"Twitter"} href={"#"}>

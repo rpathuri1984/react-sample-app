@@ -3,7 +3,6 @@ import jwt_decode from "jwt-decode";
 import { useToast } from "@chakra-ui/react";
 import { apiClient } from "../services/ApiUtils";
 import { AuthContextInterface } from "./AuthContext";
-import useLocalStorage from "../hooks/useLocalStorage";
 
 interface JwtPayload {
   email: string;
@@ -62,19 +61,9 @@ const useAuthContext = (): AuthContextInterface => {
     localStorage.removeItem("authTokens");
   };
 
-  const restoreContextFromLocalStorage = async () => {
-    console.info(localStorage.getItem("authTokens"));
-    const tokenString = await localStorage.getItem("authTokens");
-    if (tokenString) {
-      setToken(JSON.parse(tokenString).access);
-      const jwt = jwt_decode<JwtPayload>(JSON.parse(tokenString).access);
-      setExpiresAt(jwt.exp);
-      setIdToken(jwt.email);
-      setIsAuthenticated(true);
-    }
-  };
+  const isValidToken = async (token: string | null) => {
+    if (!token) return false;
 
-  const isValidateToken = async (token: string) => {
     const res = await apiClient.post("validatetoken", {
       data: {
         token,
@@ -82,22 +71,23 @@ const useAuthContext = (): AuthContextInterface => {
     });
 
     if (res.status === 200) {
+      setIsAuthenticated(true);
       return res.data;
     } else {
+      setIsAuthenticated(false);
       return false;
     }
   };
 
   return {
+    token,
     expiresAt,
     checkingSession,
     idToken,
     isAuthenticated,
-    token,
     login,
     logout,
-    restoreContextFromLocalStorage,
-    isValidateToken,
+    isValidToken,
   };
 };
 
