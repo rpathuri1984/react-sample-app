@@ -5,7 +5,7 @@ import { CLIENT_ID } from "./../common/constants";
 
 const apiClient = axios.create();
 
-type RequestType = {
+export type RequestType = {
   url: string;
   body?: any;
   queryParams?: any;

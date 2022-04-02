@@ -5,7 +5,6 @@ interface CatalogProps {}
 
 const Catalog: React.FC<CatalogProps> = () => {
   const { data, error, isLoading } = useGetCatalogByNameQuery("bulbasaur");
-
   return (
     <>
       {error && <>Oh No! something went wrong</>}

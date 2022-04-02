@@ -35,7 +35,6 @@ export const AuthProvider = (props: AuthProviderProps) => {
   const { expiresAt, isValidToken, login, logout } = useAuthContext();
 
   const checkTokenValididty = React.useCallback(async () => {
-    console.log(userToken?.access);
     return await isValidToken(userToken?.access || "");
   }, [userToken, isValidToken]);
 

@@ -7,9 +7,9 @@ import "./index.css";
 import App from "./App";
 import { store } from "./app/store";
 import * as serviceWorker from "./serviceWorker";
-import { RegisterMocks } from "./context/__mocks__/RegisterMocks";
+import { RegisterAppMocks } from "./Mocks";
 
-RegisterMocks();
+RegisterAppMocks();
 
 ReactDOM.render(
   <React.StrictMode>
