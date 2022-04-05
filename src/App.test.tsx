@@ -1,7 +1,5 @@
 import React from "react";
-import { Provider } from "react-redux";
 import { screen } from "@testing-library/react";
-import { store } from "./app/store";
 import App from "./App";
 import { mockApi, render } from "./test-utils";
 import { GetRequest, PostRequest } from "./services/ApiUtils";
@@ -12,12 +10,8 @@ describe("Api Utility Test Suite", () => {
     mockApi.reset();
   });
 
-  test("renders learn react link", () => {
-    const { getByText } = render(
-      <Provider store={store}>
-        <App />
-      </Provider>
-    );
+  test.skip("renders learn react link", () => {
+    const { getByText } = render(<App />);
 
     const linkElement = screen.getByText(/learn chakra/i);
     expect(linkElement).toBeInTheDocument();
@@ -26,18 +20,23 @@ describe("Api Utility Test Suite", () => {
   });
 
   it("should GET data from mocked api", async () => {
+    // arrange
     mockApi.onGet(/todos/).reply(200, { data: "get test success" });
 
+    // act
     const response = await GetRequest({
       url: "https://jsonplaceholder.typicode.com/todos",
     });
 
-    console.log(response.data);
+    // assert
+    expect(response.data.data).toEqual("get test success");
   });
 
   it("should POST data from mocked api", async () => {
+    // arrange
     mockApi.onPost(/posts/).reply(200, { data: "post test success" });
 
+    // act
     const re2 = await PostRequest({
       url: "https://jsonplaceholder.typicode.com/posts",
       body: {
@@ -46,6 +45,8 @@ describe("Api Utility Test Suite", () => {
         userId: 1,
       },
     });
-    console.log(re2.data);
+
+    // assert
+    expect(re2.data.data).toEqual("post test success");
   });
 });

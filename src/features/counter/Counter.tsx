@@ -11,13 +11,18 @@ import {
 } from "./counterSlice";
 import styles from "./Counter.module.css";
 import { Button, Input } from "@chakra-ui/react";
+import { usePostsQuery } from "./counterAPI";
 
 export function Counter() {
   const count = useAppSelector(selectCount);
   const dispatch = useAppDispatch();
   const [incrementAmount, setIncrementAmount] = useState("2");
-
+  const [skip, setSkip] = useState(true);
   const incrementValue = Number(incrementAmount) || 0;
+
+  const { data, isFetching, isError } = usePostsQuery({
+    skip,
+  });
 
   return (
     <div>
@@ -54,10 +59,7 @@ export function Counter() {
         >
           Add Amount
         </Button>
-        <Button
-          colorScheme="cyan"
-          onClick={() => dispatch(incrementAsync(incrementValue))}
-        >
+        <Button colorScheme="cyan" onClick={() => setSkip(!skip)}>
           Add Async
         </Button>
         <Button

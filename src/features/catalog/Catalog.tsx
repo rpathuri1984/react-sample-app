@@ -1,15 +1,18 @@
 import * as React from "react";
-import { useGetCatalogByNameQuery } from "./catalogAPI";
+import { useLazyGetCatalogByNameQuery } from "./catalogAPI";
 
 interface CatalogProps {}
 
 const Catalog: React.FC<CatalogProps> = () => {
-  const { data, error, isLoading } = useGetCatalogByNameQuery("bulbasaur");
+  const [getPokeman, result] = useLazyGetCatalogByNameQuery();
   return (
     <>
-      {error && <>Oh No! something went wrong</>}
-      {isLoading && <>Loading...!</>}
-      {data && <>Catlog Name : {data.name}</>}
+      {result.error && <>Oh No! something went wrong</>}
+      {result.isLoading && <>Loading...!</>}
+      {result.isFetching && <>Fetching...!</>}
+      {result.data && <>Catlog Name : {result.data.reason}</>}
+
+      <button onClick={() => getPokeman("bulbasaur", false)}>get data</button>
     </>
   );
 };

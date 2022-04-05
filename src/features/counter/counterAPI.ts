@@ -19,12 +19,12 @@ export const counterAPI = createApi({
     baseUrl: "https://jsonplaceholder.typicode.com/",
   }),
   endpoints: (builder) => ({
-    getPosts: builder.query<any, string>({
-      query: (name) => `posts/${name}`,
+    posts: builder.query({
+      query: () => `posts`,
     }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetPostsQuery, useLazyGetPostsQuery } = counterAPI;
+export const { usePostsQuery } = counterAPI;

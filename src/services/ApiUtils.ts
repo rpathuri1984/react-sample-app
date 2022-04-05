@@ -58,6 +58,16 @@ const DeleteRequest = async (request: RequestType) => {
   });
 };
 
+const getRTKHeaders = (headers: any) => {
+  const token = JSON.parse(localStorage.getItem("authTokens") || "{}").access;
+  // If we have a token set in state, let's assume that we should be passing it.
+  if (token) {
+    headers.set("authorization", `Bearer ${token}`);
+  }
+  headers.set("accept", "application/json");
+  return headers;
+};
+
 export {
   PostRequest,
   GetRequest,
@@ -65,5 +75,7 @@ export {
   DeleteRequest,
   apiClient,
   MockApiClient,
+  getRTKHeaders,
 };
+
 export type { RequestType as PostRequestType };

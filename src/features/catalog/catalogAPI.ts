@@ -1,17 +1,19 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import axiosBaseQuery from "../../services/axiosBaseQuery";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { getRTKHeaders } from "../../services/ApiUtils";
 import { BASE_URL } from "./Constants";
-import { Pokemon } from "./types/Catalog";
+import { Catalog } from "./types/Catalog";
 
 // Define a service using a base URL and expected endpoints
 export const catalogAPI = createApi({
   reducerPath: "catalogAPI",
-  baseQuery: axiosBaseQuery({
+  baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
+    prepareHeaders: (headers) => getRTKHeaders(headers),
+    mode: "cors",
   }),
   endpoints: (builder) => {
     return {
-      GetCatalogByName: builder.query<Pokemon, string>({
+      GetCatalogByName: builder.query<Catalog, string>({
         query: (name) => ({ url: `/pokemon/${name}` }),
       }),
     };
@@ -20,4 +22,5 @@ export const catalogAPI = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetCatalogByNameQuery } = catalogAPI;
+export const { useGetCatalogByNameQuery, useLazyGetCatalogByNameQuery } =
+  catalogAPI;

@@ -39,7 +39,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
   }, [userToken, isValidToken]);
 
   checkTokenValididty().then((value) => {
-    console.log(value);
+    // console.log(value);
   });
 
   // presence of `value` indicates a controlled context
