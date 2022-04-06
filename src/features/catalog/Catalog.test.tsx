@@ -1,30 +1,41 @@
-import { fireEvent } from "@testing-library/react";
+import { fireEvent, waitFor } from "@testing-library/react";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 
 import { render } from "./../../test-utils";
 import Catalog from "./Catalog";
 
-jest.mock("./catalogAPI");
+// jest.mock("./catalogAPI");
+
+const mockApi = new MockAdapter(axios);
+
+afterEach(() => {
+  // cleaning up the mess left behind the previous test
+  mockApi.reset();
+});
 
 describe("feature/Catalog component", () => {
-  it("should render", () => {
+  it("should render", async () => {
     // arrange
+    mockApi.onGet(/posts/i).reply(200, { title: "todo" });
 
     // act
     const { getByText } = render(<Catalog />);
 
     // assert
-    expect(getByText(/Loading...!/i)).toBeInTheDocument();
+    await waitFor(() => expect(getByText(/get data/i)).toBeInTheDocument());
   });
 
   it("should get data from api on button click", async () => {
     // arrange
+    mockApi.onGet(/posts/i).reply(200, { title: "todo" });
     const { getByText } = render(<Catalog />);
     const button = getByText(/get data/i);
 
     // act
-    await fireEvent.click(button);
+    fireEvent.click(button);
 
     // assert
-    expect(getByText(/too cold/i)).toBeInTheDocument();
+    await waitFor(() => expect(getByText(/todo/i)).toBeInTheDocument());
   });
 });

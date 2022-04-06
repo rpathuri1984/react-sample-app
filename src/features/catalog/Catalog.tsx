@@ -1,18 +1,34 @@
+import { skipToken } from "@reduxjs/toolkit/dist/query";
 import * as React from "react";
-import { useLazyGetCatalogByNameQuery } from "./catalogAPI";
+import {
+  useGetCatalogByNameQuery,
+  useLazyGetCatalogByNameQuery,
+} from "./catalogAPI";
 
 interface CatalogProps {}
 
 const Catalog: React.FC<CatalogProps> = () => {
-  const [getPokeman, result] = useLazyGetCatalogByNameQuery();
+  const [postId, setPostId] = React.useState<any>(skipToken);
+
+  const result = useGetCatalogByNameQuery(postId);
+  if (result.error) {
+    return <>Oh No! something went wrong</>;
+  }
+
+  if (result.isLoading) {
+    return <>Loading..!</>;
+  }
+
   return (
     <>
-      {result.error && <>Oh No! something went wrong</>}
-      {result.isLoading && <>Loading...!</>}
-      {result.isFetching && <>Fetching...!</>}
-      {result.data && <>Catlog Name : {result.data.reason}</>}
-
-      <button onClick={() => getPokeman("bulbasaur", false)}>get data</button>
+      Catlog Name : {result.data?.title}
+      <button
+        onClick={() => {
+          setPostId(1);
+        }}
+      >
+        get data
+      </button>
     </>
   );
 };

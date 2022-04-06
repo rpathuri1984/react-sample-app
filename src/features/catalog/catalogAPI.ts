@@ -1,20 +1,25 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { getRTKHeaders } from "../../services/ApiUtils";
+import axiosBaseQuery, {
+  axiosBaseQueryArgsType,
+} from "../../services/axiosBaseQuery";
 import { BASE_URL } from "./Constants";
-import { Catalog } from "./types/Catalog";
 
 // Define a service using a base URL and expected endpoints
 export const catalogAPI = createApi({
   reducerPath: "catalogAPI",
-  baseQuery: fetchBaseQuery({
+  baseQuery: axiosBaseQuery({
     baseUrl: BASE_URL,
-    prepareHeaders: (headers) => getRTKHeaders(headers),
-    mode: "cors",
+    prepareHeaders: (headers: any) => getRTKHeaders(headers),
+    // mode: "cors",
   }),
   endpoints: (builder) => {
     return {
-      GetCatalogByName: builder.query<Catalog, string>({
-        query: (name) => ({ url: `/pokemon/${name}` }),
+      GetCatalogByName: builder.query<any, string>({
+        query: (name): axiosBaseQueryArgsType => ({
+          url: `/posts/${name}`,
+          method: "GET",
+        }),
       }),
     };
   },

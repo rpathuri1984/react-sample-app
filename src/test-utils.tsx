@@ -19,4 +19,4 @@ const customRender = (ui: React.ReactElement, options?: RenderOptions) =>
 
 const mockApi = MockApiClient();
 
-export { customRender as render, mockApi };
+export { customRender as render, mockApi, AllProviders as wrapper };

@@ -1,4 +1,5 @@
-import axios from "axios";
+import { BaseQueryFn } from "@reduxjs/toolkit/dist/query";
+import axios, { AxiosRequestConfig, AxiosError } from "axios";
 import MockAdapter from "axios-mock-adapter";
 
 import { CLIENT_ID } from "./../common/constants";
@@ -20,6 +21,7 @@ const getHeaders = (headers?: any) => {
     "X-ClientId": CLIENT_ID,
     Accept: "application/json",
     "Content-Type": "application/json",
+    ...headers,
   };
 };
 
@@ -75,6 +77,7 @@ export {
   DeleteRequest,
   apiClient,
   MockApiClient,
+  getHeaders,
   getRTKHeaders,
 };
 
