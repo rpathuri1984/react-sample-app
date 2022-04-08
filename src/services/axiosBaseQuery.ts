@@ -1,22 +1,22 @@
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
 import axios, { AxiosRequestConfig, AxiosError } from "axios";
 
-export type axiosBaseQueryType = {
+export type AxiosBaseQueryType = {
   baseUrl: string;
   prepareHeaders?: Function;
 };
 
-export type axiosBaseQueryArgsType = {
+export type AxiosBaseQueryArgsType = {
   url: string;
   method: AxiosRequestConfig["method"];
   params?: AxiosRequestConfig["params"];
   data?: AxiosRequestConfig["data"];
 };
 
-const axiosBaseQuery =
+const AxiosBaseQuery =
   (
-    { baseUrl }: axiosBaseQueryType = { baseUrl: "/" }
-  ): BaseQueryFn<axiosBaseQueryArgsType, unknown, unknown> =>
+    { baseUrl }: AxiosBaseQueryType = { baseUrl: "/" }
+  ): BaseQueryFn<AxiosBaseQueryArgsType, unknown, unknown> =>
   async ({ url, method, data, params }) => {
     try {
       const result = await axios({
@@ -35,4 +35,4 @@ const axiosBaseQuery =
     }
   };
 
-export default axiosBaseQuery;
+export default AxiosBaseQuery;

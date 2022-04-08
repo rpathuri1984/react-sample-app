@@ -21,6 +21,10 @@ import { FaUserAlt, FaLock } from "react-icons/fa";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { AuthContext } from "../context/AuthContext";
+import { skipToken } from "@reduxjs/toolkit/dist/query";
+import { useLoginQuery } from "../services/IdentityServiceApi";
+import MockAdapter from "axios-mock-adapter";
+import axios from "axios";
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -32,8 +36,26 @@ const loginValidationSchema = Yup.object().shape({
     .min(8, "Password is too short - should be 8 chars minimum."),
 });
 
+/**
+ * @description this should be removed before pushing to PROD
+ *
+ */
+const registerApiMocks = () => {
+  const mockApi = new MockAdapter(axios);
+  mockApi.onPost(/token/i).reply(200, {
+    access:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlJhdmkiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTcxNjIzOTAyMiwiZW1haWwiOiJycGF0aHVyaUBnbWFpbC5jb20ifQ.6QbUtZHfb8mxpokKDg1B5DK60kuAjc4Lo-xGr53honU",
+    refresh: "1234",
+  });
+  mockApi.onPost(/validatetoken/i).reply(200, false);
+};
+
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loginReqest, setLoginRequet] = React.useState<any>(skipToken);
+  const { data, isSuccess, isError, error, isLoading, currentData } =
+    useLoginQuery(loginReqest);
+
   const handleShowClick = () => setShowPassword(!showPassword);
   const context = React.useContext(AuthContext);
   const formik = useFormik({
@@ -43,9 +65,24 @@ const LoginPage = () => {
     },
     validationSchema: loginValidationSchema,
     onSubmit: async (values) => {
-      await context?.login(values.email, values.password);
-      window.location.href = "/user";
+      setLoginRequet({ userName: values.email, password: values.password });
     },
+  });
+
+  // TODO: this should be removed before PROD
+  registerApiMocks();
+
+  const checkAndRedirect = async () => {
+    if (isSuccess) {
+      await context?.setLoginSuccess(data);
+      window.location.href = "/user";
+    } else if (isError) {
+      console.log(error, currentData, isLoading);
+    }
+  };
+
+  React.useEffect(() => {
+    checkAndRedirect();
   });
 
   return (

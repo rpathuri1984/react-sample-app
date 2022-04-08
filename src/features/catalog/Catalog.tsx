@@ -1,9 +1,6 @@
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import * as React from "react";
-import {
-  useGetCatalogByNameQuery,
-  useLazyGetCatalogByNameQuery,
-} from "./catalogAPI";
+import { useGetCatalogByNameQuery } from "./../../services/CatalogServiceApi";
 
 interface CatalogProps {}
 

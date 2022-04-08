@@ -2,16 +2,20 @@ import { configureStore } from "@reduxjs/toolkit";
 import { ThunkAction } from "redux-thunk";
 
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { catalogAPI } from "./../features/catalog/catalogAPI";
+import { CatalogServiceApi } from "./../services/CatalogServiceApi";
+import { IdentityServiceApi } from "./../services/IdentityServiceApi";
 import counterReducer from "../features/counter/counterSlice";
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
-    [catalogAPI.reducerPath]: catalogAPI.reducer,
+    [CatalogServiceApi.reducerPath]: CatalogServiceApi.reducer,
+    [IdentityServiceApi.reducerPath]: IdentityServiceApi.reducer,
   },
   middleware: (getDefaultMiddleware: any) =>
-    getDefaultMiddleware().concat(catalogAPI.middleware),
+    getDefaultMiddleware()
+      .concat(CatalogServiceApi.middleware)
+      .concat(IdentityServiceApi.middleware),
   devTools: process.env.NODE_ENV === "development",
 });
 

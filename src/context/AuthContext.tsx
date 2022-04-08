@@ -4,15 +4,10 @@ import useAuthContext from "./useAuthContext";
 
 export interface AuthContextInterface {
   token: string | null;
-  checkingSession: boolean;
   idToken: string | null;
   expiresAt: number | null;
   isAuthenticated: boolean;
-  login: (
-    userName: string,
-    pasword: string,
-    returnPath?: string
-  ) => Promise<void>;
+  setLoginSuccess: (authTokens: any) => void;
   logout: () => Promise<void>;
   isValidToken: (token: string | null) => Promise<boolean>;
 }
@@ -32,7 +27,7 @@ export interface AuthProviderProps {
 export const AuthProvider = (props: AuthProviderProps) => {
   const { children } = props;
   const [userToken] = useLocalStorage<any>("authTokens", null);
-  const { expiresAt, isValidToken, login, logout } = useAuthContext();
+  const { expiresAt, isValidToken, logout, setLoginSuccess } = useAuthContext();
 
   const checkTokenValididty = React.useCallback(async () => {
     return await isValidToken(userToken?.access || "");
@@ -50,11 +45,11 @@ export const AuthProvider = (props: AuthProviderProps) => {
       checkingSession: false,
       isAuthenticated: userToken ? true : false,
       idToken: null,
+      setLoginSuccess: setLoginSuccess,
       isValidToken: isValidToken,
-      login: login,
       logout: logout,
     }),
-    [userToken, expiresAt, isValidToken, login, logout]
+    [userToken, expiresAt, isValidToken, logout, setLoginSuccess]
   );
 
   return (

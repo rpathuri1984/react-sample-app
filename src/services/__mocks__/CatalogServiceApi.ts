@@ -1,14 +1,13 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Catalog } from "./../types/Catalog";
 
-export const catalogAPI = createApi({
-  reducerPath: "catalogAPI",
+export const CatalogServiceApi = createApi({
+  reducerPath: "CatalogServiceApi",
   baseQuery: fakeBaseQuery(),
   endpoints: (builder) => ({
-    GetCatalogByName: builder.query<Catalog, string>({
+    GetCatalogByName: builder.query<any, string>({
       queryFn: (name) => {
-        let result: Catalog = {
-          reason: "too cold",
+        let result = {
+          title: "to do",
         };
 
         return { data: result };
@@ -18,4 +17,4 @@ export const catalogAPI = createApi({
 });
 
 export const { useGetCatalogByNameQuery, useLazyGetCatalogByNameQuery } =
-  catalogAPI;
+  CatalogServiceApi;
